@@ -9,7 +9,7 @@
 # Opis projekta
 ## Kratki opis
 ### H20 
-Osobni plan hidratacije, jednostavna i intuitivna aplikacija za praćenje unosa vode. H20 aplikacija podsjeća korisnika da pije vodu kako bi postigao dnevne ciljeve i izgradio dobru naviku. Korisnik postavi svoj dnevni cilj te ga aplikacija na osnovu tog cilja podsjeća na konzumiranje vode. Cilj može biti postavljen u broju litara, čaša ili boca. Korisnik unosi u aplikaciju količinu koju je konzumirao te se dnevna količina ažurira. Aplikacija pruža korisniku uvid u dnevnu-tjednu-mjesečnu-godišnju količinu unosa vode.
+Osobni plan hidratacije u obliku jednostavne i intuitivne aplikacije za praćenje unosa vode. H20 aplikacija podsjeća korisnika da pije vodu kako bi postigao dnevne ciljeve i izgradio dobru naviku. Korisnik postavi svoj dnevni cilj te ga aplikacija na osnovu tog cilja podsjeća na konzumiranje vode. Cilj može biti postavljen u broju litara, čaša ili boca. Korisnik unosi u aplikaciju količinu koju je konzumirao te se dnevna količina ažurira. Aplikacija pruža korisniku uvid u dnevnu-tjednu-mjesečnu-godišnju količinu unosa vode.
 ## Popis funkcionalnosti
 1. postavljanje dnevnog cilja
 2. vremenski podsjetnik
