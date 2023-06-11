@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Modal } from 'react-native';
+
+import DnevniCilj from '../screens/DnevniCilj';
+
 
 const PocetniEkran = () => {
   const [dailyGoal, setDailyGoal] = useState('');
   const [consumed, setConsumed] = useState(0);
   const [customInput, setCustomInput] = useState('');
   const [lastInputs, setLastInputs] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showCongratulations, setShowCongratulations] = useState(false);
 
   const handleAddWater = amount => {
     setConsumed(consumed + amount);
@@ -24,6 +29,7 @@ const PocetniEkran = () => {
   const handleReset = () => {
     setConsumed(0);
     setLastInputs([]);
+    setShowCongratulations(false);
   };
 
   const handleUndo = () => {
@@ -35,25 +41,38 @@ const PocetniEkran = () => {
       } else {
         setConsumed(0);
         setLastInputs([]);
-      }
+      }    
     }
   };
 
+  const handleSaveGoal = () => {
+    if (!isNaN(parseFloat(dailyGoal)) && parseFloat(dailyGoal) > 0) {
+      setDailyGoal(parseFloat(dailyGoal));
+    }
+    setIsModalVisible(false);
+  };
+
+  const handleCancelGoal = () => {
+    setIsModalVisible(false);
+  };
+
+  //provjera je li postavljeni cilj dostignut zbog ispisa poruke
+  useEffect(() => {
+    if (parseFloat(dailyGoal) > 0 && consumed < parseFloat(dailyGoal)) {
+      setShowCongratulations(false);
+    } else if (parseFloat(dailyGoal) > 0 && consumed >= parseFloat(dailyGoal)) {
+      setShowCongratulations(true);
+    }
+  }, [consumed, dailyGoal]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Postavi svoj dnevni cilj (u litrama):</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Unesite cilj"
-        value={dailyGoal}
-        onChangeText={text => setDailyGoal(text)}
-        onBlur={() => {
-          if (!isNaN(parseFloat(dailyGoal)) && parseFloat(dailyGoal) > 0) {
-            setDailyGoal(parseFloat(dailyGoal));
-          }
-        }}
-        keyboardType="numeric"
-      />
+      <View style={styles.buttonContainer}>
+        <Button title="Postavi cilj" onPress={() => setIsModalVisible(true)} />
+      </View>
+      {dailyGoal !== '' && (
+        <Text style={styles.goalText}>Dnevni cilj: {parseFloat(dailyGoal).toFixed(1)} L</Text>
+      )}
 
       <Text style={styles.label}>Konzumirano: {consumed.toFixed(1).replace('.0', '')} L</Text>
       <View style={styles.buttonContainer}>
@@ -79,12 +98,24 @@ const PocetniEkran = () => {
       <View style={styles.buttonContainer}>
         <Button title="Reset" onPress={handleReset} />
       </View>
+      <Modal visible={isModalVisible} transparent={true}>
+        <View style={styles.modalContainer}>
+          <DnevniCilj
+            dailyGoal={dailyGoal}
+            setDailyGoal={setDailyGoal}
+            onSave={handleSaveGoal}
+            onCancel={handleCancelGoal}
+          />
+        </View>
+      </Modal>
+      {showCongratulations && <Text style={styles.congratulationsText}>Čestitamo, ostvarili ste željeni cilj!</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#ADD8E6',
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
@@ -93,6 +124,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#00008B'
   },
   input: {
     height: 40,
@@ -104,6 +136,14 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginBottom: 8,
   },
+  congratulationsText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 50,
+    color: '#00008B',
+  },
+  
 });
 
 export default PocetniEkran;

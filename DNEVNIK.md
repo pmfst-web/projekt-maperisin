@@ -18,6 +18,13 @@ Definirani su sljedeći zahtjevi aplikacije:
 
 Ove promjene i funkcionalnosti pružaju korisnicima mogućnost postavljanja dnevnog cilja i unošenja dnevne konzumacije vode na intuitivan način. Također, zatvaranje izbornika prilikom dodira bilo gdje drugdje na ekranu poboljšava korisničko iskustvo i olakšava navigaciju kroz aplikaciju.
 
-## 10.06.2023.
+## 10.06.2023
+Pocetak | Kraj
+------- | ----
+10:00   | 23:00
 ### Kratki opis promjena
+- Umjesto padajućeg izbornika, dodan je novi pristup za navigaciju -> tab navigatori koji se nalaze na dnu ekrana. Na taj način je ostvarena navigacija između početnog ekrana i ekrana sa statistikom
+- Na početnom ekranu dodan je gumb "Postavi cilj", koji otvara modal komponentu -> prikazuje sadržaj u posebnom prozoru koji se postavlja iznad glavnog dijela aplikacije. U prozoru se nalazi sadržaj za unos dnevnog cilja, te gumb za spremanje ili odbacivanje
+- Dodana je i funkcionalnost koja prati je li korisnik ostvario želejni cilj. U slučaju da je korisnik ostvario cilj, na dnu ekrana se ispisuje poruka: "Čestitamo ostvarili ste željeni cilj!"
+
 
