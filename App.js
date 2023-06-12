@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, StyleSheet, SafeAreaView, StatusBar, Modal} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
@@ -10,6 +10,18 @@ import StatistikaEkran from './screens/StatistikaEkran';
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  const [history, setHistory] = useState([]);
+
+  const handleAddToHistory = (date, consumed) => {
+    const newDay = { date, consumed };
+    setHistory([...history, newDay]);
+  };
+  
+  //TESTNI PODACI
+  const testHistory = [
+    { date: '11.06', consumed: 3 },
+    { date: '12.06', consumed: 2 },
+  ];
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -38,8 +50,12 @@ const App = () => {
             //headerShown: route.name !== 'Naslovna', //sakrivanje headera "Naslovna" sa početnog ekrana
           })}
         >
-          <Tab.Screen name="Naslovna" component={PocetniEkran} />
-          <Tab.Screen name="Statistika" component={StatistikaEkran} />
+        <Tab.Screen name="Naslovna">
+          {() => <PocetniEkran onAddToHistory={handleAddToHistory} />}
+        </Tab.Screen>
+        <Tab.Screen name="Statistika">
+          {() => <StatistikaEkran history={testHistory} />}
+        </Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>

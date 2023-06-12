@@ -11,19 +11,29 @@ const PocetniEkran = () => {
   const [lastInputs, setLastInputs] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showCongratulations, setShowCongratulations] = useState(false);
+  //prati je li dan završen
+  const [isDayOver, setIsDayOver] = useState(false);
 
   const handleAddWater = amount => {
     setConsumed(consumed + amount);
     setLastInputs([...lastInputs, amount]);
   };
 
+  //provjera je li dan završen prije dodavanja vode
   const handleUpdateWater = () => {
-    const customAmount = parseFloat(customInput);
-    if (!isNaN(customAmount) && customAmount > 0) {
-      setConsumed(consumed + customAmount);
-      setLastInputs([...lastInputs, customAmount]);
+    if (isDayOver) {
+      // Resetiranje broja unesene količine na 0
+      setConsumed(0);
+      setLastInputs([]);
+      setIsDayOver(false);
     }
-    setCustomInput('');
+  
+    const input = parseFloat(customInput);
+    if (!isNaN(input) && input > 0) {
+      setConsumed(consumed + input);
+      setLastInputs([...lastInputs, input]);
+      setCustomInput('');
+    }
   };
 
   const handleReset = () => {
@@ -56,6 +66,22 @@ const PocetniEkran = () => {
     setIsModalVisible(false);
   };
 
+  //označava kraj dana i resetira broj unesene količine
+  const handleEndDay = () => {
+    setIsDayOver(true);
+    //dodaje završene dane u povijest
+    const currentTime = new Date();
+    const formattedDate = currentTime.toLocaleDateString();
+  
+    const newDay = {
+      date: formattedDate,
+      consumed: consumed.toFixed(1),
+    };
+  
+    setHistory(prevHistory => [...prevHistory, newDay]);
+  };
+  
+
   //provjera je li postavljeni cilj dostignut zbog ispisa poruke
   useEffect(() => {
     if (parseFloat(dailyGoal) > 0 && consumed < parseFloat(dailyGoal)) {
@@ -64,6 +90,21 @@ const PocetniEkran = () => {
       setShowCongratulations(true);
     }
   }, [consumed, dailyGoal]);
+
+  //poziva funkciju handleEndDay kada dan završi
+  useEffect(() => {
+    const currentTime = new Date();
+    const endOfDay = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 23, 59, 59);
+  
+    const timer = setTimeout(() => {
+      handleEndDay();
+    }, endOfDay - currentTime);
+  
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+  
 
   return (
     <View style={styles.container}>

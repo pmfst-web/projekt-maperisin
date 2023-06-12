@@ -27,4 +27,13 @@ Pocetak | Kraj
 - Na početnom ekranu dodan je gumb "Postavi cilj", koji otvara modal komponentu -> prikazuje sadržaj u posebnom prozoru koji se postavlja iznad glavnog dijela aplikacije. U prozoru se nalazi sadržaj za unos dnevnog cilja, te gumb za spremanje ili odbacivanje
 - Dodana je i funkcionalnost koja prati je li korisnik ostvario želejni cilj. U slučaju da je korisnik ostvario cilj, na dnu ekrana se ispisuje poruka: "Čestitamo ostvarili ste željeni cilj!"
 
+## 11.06.2023
+Pocetak | Kraj
+------- | ----
+10:00   | 23:00
+### Kratki opis promjena
+- Dodana funkcionalnost koja prati kada je dan završio te sprema taj dan sa unesenom količinom vode u povijest i restira unesenu količinu vode na 0 za novi dan
+- Omogućen prikaz povijesti na ekranu Statistika, trenutno samo testni podaci
+
+
 
