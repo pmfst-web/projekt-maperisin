@@ -36,4 +36,12 @@ Pocetak | Kraj
 - Omogućen prikaz povijesti na ekranu Statistika, trenutno samo testni podaci
 
 
+## 16.06.2023
+Pocetak | Kraj
+------- | ----
+13:00   | 22:00
+### Kratki opis promjena
+- Na početni ekran dodan gumb "Odaberi datum" pomoću kojeg se otvara kalendar te korisnik može izabrati 
+željeni datum 
+- Također, dodana je nova komponenta Kalendar, dodana je i funkcija kako se nebi mogli odabrati budući datumi već samo trenutni i prethodni
 

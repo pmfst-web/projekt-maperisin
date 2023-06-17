@@ -1,18 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const StatistikaEkran = (props) => {
-    const { history } = props;
-  
+const StatistikaEkran = () => { 
     return (
       <View style={styles.container}>
-        <Text style={styles.heading}>Povijest dnevnog unosa vode:</Text>
-        {history.map((day, index) => (
-          <View key={index} style={styles.dayContainer}>
-            <Text style={styles.dayText}>Datum: {day.date}</Text>
-            <Text style={styles.dayText}>Konzumirano: {day.consumed} L</Text>
-          </View>
-        ))}
+        <Text style={styles.heading}>Povijest dnevnog unosa vode:</Text>      
       </View>
     );
   };

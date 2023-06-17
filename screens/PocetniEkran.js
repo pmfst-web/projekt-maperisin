@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Modal } from 'react-native';
 
 import DnevniCilj from '../screens/DnevniCilj';
+import Kalendar from '../screens/Kalendar';
+
 
 
 const PocetniEkran = () => {
@@ -11,29 +13,26 @@ const PocetniEkran = () => {
   const [lastInputs, setLastInputs] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showCongratulations, setShowCongratulations] = useState(false);
-  //prati je li dan završen
-  const [isDayOver, setIsDayOver] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+
+  const handleDayPress = day => {
+    setSelectedDate(day.dateString);
+    setIsCalendarVisible(false);
+  };
 
   const handleAddWater = amount => {
     setConsumed(consumed + amount);
     setLastInputs([...lastInputs, amount]);
   };
 
-  //provjera je li dan završen prije dodavanja vode
   const handleUpdateWater = () => {
-    if (isDayOver) {
-      // Resetiranje broja unesene količine na 0
-      setConsumed(0);
-      setLastInputs([]);
-      setIsDayOver(false);
+    const customAmount = parseFloat(customInput);
+    if (!isNaN(customAmount) && customAmount > 0) {
+      setConsumed(consumed + customAmount);
+      setLastInputs([...lastInputs, customAmount]);
     }
-  
-    const input = parseFloat(customInput);
-    if (!isNaN(input) && input > 0) {
-      setConsumed(consumed + input);
-      setLastInputs([...lastInputs, input]);
-      setCustomInput('');
-    }
+    setCustomInput('');
   };
 
   const handleReset = () => {
@@ -65,21 +64,6 @@ const PocetniEkran = () => {
   const handleCancelGoal = () => {
     setIsModalVisible(false);
   };
-
-  //označava kraj dana i resetira broj unesene količine
-  const handleEndDay = () => {
-    setIsDayOver(true);
-    //dodaje završene dane u povijest
-    const currentTime = new Date();
-    const formattedDate = currentTime.toLocaleDateString();
-  
-    const newDay = {
-      date: formattedDate,
-      consumed: consumed.toFixed(1),
-    };
-  
-    setHistory(prevHistory => [...prevHistory, newDay]);
-  };
   
 
   //provjera je li postavljeni cilj dostignut zbog ispisa poruke
@@ -90,20 +74,6 @@ const PocetniEkran = () => {
       setShowCongratulations(true);
     }
   }, [consumed, dailyGoal]);
-
-  //poziva funkciju handleEndDay kada dan završi
-  useEffect(() => {
-    const currentTime = new Date();
-    const endOfDay = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 23, 59, 59);
-  
-    const timer = setTimeout(() => {
-      handleEndDay();
-    }, endOfDay - currentTime);
-  
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
   
 
   return (
@@ -112,8 +82,12 @@ const PocetniEkran = () => {
         <Button title="Postavi cilj" onPress={() => setIsModalVisible(true)} />
       </View>
       {dailyGoal !== '' && (
-        <Text style={styles.goalText}>Dnevni cilj: {parseFloat(dailyGoal).toFixed(1)} L</Text>
+        <Text style={styles.goalText}>Dnevni cilj: {parseFloat(dailyGoal).toFixed(1).replace('.0', '')} L</Text>
       )}
+      <View style={styles.buttonContainer}>
+        <Button title="Odaberi datum" onPress={() => setIsCalendarVisible(true)} />
+      </View>
+      <Text style={styles.label}>Datum: {selectedDate.split('-').reverse().join('/')}</Text>
 
       <Text style={styles.label}>Konzumirano: {consumed.toFixed(1).replace('.0', '')} L</Text>
       <View style={styles.buttonContainer}>
@@ -139,6 +113,15 @@ const PocetniEkran = () => {
       <View style={styles.buttonContainer}>
         <Button title="Reset" onPress={handleReset} />
       </View>
+      
+      {isCalendarVisible && (
+        <Kalendar
+          isVisible={isCalendarVisible}
+          onDayPress={handleDayPress}
+          selectedDate={selectedDate}
+        />
+      )}
+
       <Modal visible={isModalVisible} transparent={true}>
         <View style={styles.modalContainer}>
           <DnevniCilj
@@ -183,6 +166,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 50,
     color: '#00008B',
+  },
+  calendarContainer: {
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    marginVertical: 10,
   },
   
 });
