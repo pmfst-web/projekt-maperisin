@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Modal } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Modal, KeyboardAvoidingView, FontAwesome } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import DnevniCilj from '../screens/DnevniCilj';
 import Kalendar from '../screens/Kalendar';
 
 
-
-const PocetniEkran = () => {
+const PocetniEkran = ({ waterIntakeData, onSaveWaterIntake }) => {
   const [dailyGoal, setDailyGoal] = useState('');
   const [consumed, setConsumed] = useState(0);
   const [customInput, setCustomInput] = useState('');
@@ -16,6 +16,28 @@ const PocetniEkran = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
+  useEffect(() => {
+    console.log(waterIntakeData);
+  }, [waterIntakeData]);
+
+
+  const handleSaveWaterIntake = () => {
+    if (selectedDate === '') {
+      // ako datum nije odabran, ne sprema se podatak
+      return;
+    }
+
+    const waterIntake = {
+      date: selectedDate,
+      amount: consumed.toFixed(1),
+    };
+  
+    onSaveWaterIntake(waterIntake);
+    setSelectedDate('');
+    setConsumed(0);
+  };
+  
+  
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
     setIsCalendarVisible(false);
@@ -82,30 +104,33 @@ const PocetniEkran = () => {
         <Button title="Postavi cilj" onPress={() => setIsModalVisible(true)} />
       </View>
       {dailyGoal !== '' && (
-        <Text style={styles.goalText}>Dnevni cilj: {parseFloat(dailyGoal).toFixed(1).replace('.0', '')} L</Text>
+        <Text style={styles.label}>Dnevni cilj: {parseFloat(dailyGoal).toFixed(1).replace('.0', '')} L</Text>
       )}
       <View style={styles.buttonContainer}>
-        <Button title="Odaberi datum" onPress={() => setIsCalendarVisible(true)} />
+        <Button title="Odaberi datum" onPress={() => setIsCalendarVisible(true)} />  
       </View>
       <Text style={styles.label}>Datum: {selectedDate.split('-').reverse().join('/')}</Text>
 
       <Text style={styles.label}>Konzumirano: {consumed.toFixed(1).replace('.0', '')} L</Text>
       <View style={styles.buttonContainer}>
-        <Button title="Dodaj čašu (200ml)" onPress={() => handleAddWater(0.2)} />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Dodaj bocu (500ml)" onPress={() => handleAddWater(0.5)} />
+        <Button title="+ čaša (200ml)" onPress={() => handleAddWater(0.2)} />
+        <View style={styles.separator} />
+        <Button title="+ boca (500ml)" onPress={() => handleAddWater(0.5)} />
       </View>
       <Text style={styles.label}>Unesi količinu vode (u litrama):</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Unesi količinu"
-        value={customInput}
-        onChangeText={text => setCustomInput(text)}
-        keyboardType="numeric"
-      />
-      <View style={styles.buttonContainer}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Unesi količinu"
+          value={customInput}
+          onChangeText={text => setCustomInput(text)}
+          keyboardType="numeric"
+        /> 
+        <View style={styles.separator} />   
         <Button title="Unesi" onPress={handleUpdateWater} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Spremi" onPress={handleSaveWaterIntake} />
       </View>
       <View style={styles.buttonContainer}>
         <Button title="Poništi zadnju dodanu količinu" onPress={handleUndo} />    
@@ -113,7 +138,7 @@ const PocetniEkran = () => {
       <View style={styles.buttonContainer}>
         <Button title="Reset" onPress={handleReset} />
       </View>
-      
+
       {isCalendarVisible && (
         <Kalendar
           isVisible={isCalendarVisible}
@@ -144,6 +169,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
   },
+ 
   label: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -159,6 +185,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'center', 
   },
   congratulationsText: {
     fontSize: 20,
@@ -170,9 +198,15 @@ const styles = StyleSheet.create({
   calendarContainer: {
     marginBottom: 20,
   },
-  buttonContainer: {
-    marginVertical: 10,
+  separator: {
+    width: 30,
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+ 
   
 });
 

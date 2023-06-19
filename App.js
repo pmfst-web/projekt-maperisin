@@ -10,6 +10,13 @@ import StatistikaEkran from './screens/StatistikaEkran';
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  
+  const [waterIntakeData, setWaterIntakeData] = useState([]);
+
+  const handleSaveWaterIntake = (waterIntake) => {
+    setWaterIntakeData([...waterIntakeData, waterIntake]);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
@@ -37,8 +44,23 @@ const App = () => {
             //headerShown: route.name !== 'Naslovna', //sakrivanje headera "Naslovna" sa početnog ekrana
           })}
         >
-        <Tab.Screen name="Naslovna" component={PocetniEkran} />
-        <Tab.Screen name="Statistika" component={StatistikaEkran} />
+        <Tab.Screen name="Naslovna">
+            {props => (
+              <PocetniEkran
+                {...props}
+                waterIntakeData={waterIntakeData}
+                onSaveWaterIntake={handleSaveWaterIntake}
+              />
+            )}
+          </Tab.Screen>
+          <Tab.Screen name="Statistika">
+            {props => (
+              <StatistikaEkran
+                {...props}
+                waterIntakeData={waterIntakeData}
+              />
+            )}
+          </Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
