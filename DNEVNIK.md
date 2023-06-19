@@ -45,3 +45,12 @@ Pocetak | Kraj
 željeni datum 
 - Također, dodana je nova komponenta Kalendar, dodana je i funkcija kako se nebi mogli odabrati budući datumi već samo trenutni i prethodni
 
+
+## 17.06.2023
+Pocetak | Kraj
+------- | ----
+09:00   | 22:00
+### Kratki opis promjena
+- Dodane funkcionalnosti za prikaz povijesti unesene količine vode po odabranom datumu na ekranu Statistika
+
+
