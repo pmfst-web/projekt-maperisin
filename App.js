@@ -5,17 +5,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
 
 import PocetniEkran from './screens/PocetniEkran';
-import StatistikaEkran from './screens/StatistikaEkran';
+import PovijestEkran from './screens/PovijestEkran';
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
-  
-  const [waterIntakeData, setWaterIntakeData] = useState([]);
 
-  const handleSaveWaterIntake = (waterIntake) => {
-    setWaterIntakeData([...waterIntakeData, waterIntake]);
-  };
+  const [waterIntakeData, setWaterIntakeData] = useState([]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -26,22 +22,19 @@ const App = () => {
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({ route }) => ({
-            headerShown: false, //header Naslovna i Statistika sakriveni
+            headerShown: false, //header Naslovna i Povijest sakriveni
               
             tabBarIcon: ({ color, size }) => {
               let iconName;
 
               if (route.name === 'Naslovna') {
                 iconName = 'home';
-              } else if (route.name === 'Statistika') {
-                iconName = 'linechart';
+              } else if (route.name === 'Povijest') {
+                iconName = 'filetext1';
               }
 
               return <AntDesign name={iconName} size={size} color={color} />;
             },
-            activeTintColor: 'blue',
-            inactiveTintColor: 'gray',
-            //headerShown: route.name !== 'Naslovna', //sakrivanje headera "Naslovna" sa početnog ekrana
           })}
         >
         <Tab.Screen name="Naslovna">
@@ -49,13 +42,13 @@ const App = () => {
               <PocetniEkran
                 {...props}
                 waterIntakeData={waterIntakeData}
-                onSaveWaterIntake={handleSaveWaterIntake}
+                setWaterIntakeData={setWaterIntakeData}
               />
             )}
           </Tab.Screen>
-          <Tab.Screen name="Statistika">
+          <Tab.Screen name="Povijest">
             {props => (
-              <StatistikaEkran
+              <PovijestEkran
                 {...props}
                 waterIntakeData={waterIntakeData}
               />
@@ -86,7 +79,7 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#00008B'
+    color: '#004080'
   },
 });
 

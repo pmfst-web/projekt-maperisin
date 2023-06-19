@@ -53,4 +53,13 @@ Pocetak | Kraj
 ### Kratki opis promjena
 - Dodane funkcionalnosti za prikaz povijesti unesene količine vode po odabranom datumu na ekranu Statistika
 
+## 18.06.2023
+Pocetak | Kraj
+------- | ----
+08:00   | 16:00
+### Kratki opis promjena
+- Dodane funkcionalnosti za sortiranje podatka unosa vode po datumima (od najnovijeg do najstarijeg)
+- Izmjena imena StatistikaEkran u PovijestEkran 
+- Sređen izgled stranice 
+
 

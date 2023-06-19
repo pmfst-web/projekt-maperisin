@@ -38,18 +38,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#004080',
   },
   modalInput: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#004080',
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
+    color: '#004080'
   },
   modalButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 16,
+    borderRadius: 100
   },
   buttonSeparator: {
     width: 30,
